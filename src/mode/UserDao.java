@@ -45,6 +45,34 @@ public class UserDao {
 	    st = rs.next();
 	    return st;
 	}
+	//admincheck
+	
+	public static boolean  admincheck(String aduser, String adpass) throws ClassNotFoundException, SQLException
+	{
+		boolean st =false;
+		Connection con = getconnection();
+		String sql = "Select * from user where aduser=? and aspass=?";
+		java.sql.PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, aduser);
+		ps.setString(2, adpass);	
+		 ResultSet rs =ps.executeQuery();
+		 st = rs.next();
+		 return st;
+	}
+	/*public static boolean logincheck(String username, String password) throws ClassNotFoundException, SQLException
+	{
+		boolean st =false;
+		Connection con= getconnection();
+		String sql="Select * from user where username=? and password=?";
+		java.sql.PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, username);
+		ps.setString(2, password);
+		
+	    ResultSet rs =ps.executeQuery();
+	    st = rs.next();
+	    return st;
+	}*/
+	
 	//forgat
 	public int forgat(String username,String newpassword) throws ClassNotFoundException, SQLException
 	{
@@ -59,32 +87,28 @@ public class UserDao {
 		return status;
 	}
 	
-	
-	/*public void saveu(user u1) throws ClassNotFoundException, SQLException
+	//profileusedetails
+	public int userprof(user u) throws ClassNotFoundException, SQLException
 	{
 		Connection con=getconnection();
-		String sql="Select * from user where email="+email+"";
-		//String sql="insert into user(fname, lname, email, username, password) value('"+u.getFname()+"','"+u.getLname()+"','"+u.getEmail()+"','"+u.getUsername()+"','"+u.getPassword()+"')";
+		String sql="insert into profileuser(name,number,saddress,caddress,college,course,total_sem,remaining_sem) value('"+u.getName()+"','"+u.getNumber()+"','"+u.getSaddress()+"','"+u.getCaddress()+"','"+u.getCollege()+"','"+u.getCourse()+"','"+u.getTotal_sem()+"','"+u.getRemaining_sem()+"')";
 		Statement st =con.createStatement();
-		ResultSet rs =st.executeQuery(sql); 
-		//int a = st.executeUpdate(sql);
-		int ct = 0;
-		   while(rs.next())
-		      {
-			  ct++;	
-		      }
-		   if (ct > 0)
-		      {
-			  throw new SQLException("Duplicate info<br>Chemical Name " + email );
-		      }
-		   else
-		      {
-			   System.out.println("Data insert");
-		      }
-		      
+		int a = st.executeUpdate(sql);
 		con.close();
+		return a;
 		
-		
-	}*/
+	}
+	
+	public boolean userprofile(String email) throws ClassNotFoundException, SQLException
+	{
+		boolean st =false;
+		Connection con= getconnection();
+		String sql="Select * from user where email=?";
+		java.sql.PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, email);
+		ResultSet rs =ps.executeQuery();
+		 st = rs.next();
+		 return st;
+	}
 }
 
